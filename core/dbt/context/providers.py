@@ -132,6 +132,9 @@ class BaseDatabaseWrapper:
             )
             raise CompilationException(msg)
 
+        if packages is not None:
+            deprecations.warn('dispatch-packages', macro_name=macro_name)
+
         namespace = packages if packages else macro_namespace
 
         if namespace is None:
@@ -1190,14 +1193,13 @@ class ProviderContext(ManifestContext):
         """
         deprecations.warn('adapter-macro', macro_name=name)
         original_name = name
-        package_names: Optional[List[str]] = None
+        package_name = None
         if '.' in name:
             package_name, name = name.split('.', 1)
-            package_names = [package_name]
 
         try:
             macro = self.db_wrapper.dispatch(
-                macro_name=name, packages=package_names
+                macro_name=name, macro_namespace=package_name
             )
         except CompilationException as exc:
             raise CompilationException(

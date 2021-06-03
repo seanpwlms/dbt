@@ -1,5 +1,5 @@
 {% macro test_pkg_and_dispatch(model) -%}
-  {{ return(adapter.dispatch('test_pkg_and_dispatch', macro_namespace = 'test_utils')()) }}
+  {{ return(adapter.dispatch('test_pkg_and_dispatch', none, macro_namespace = 'test_utils')()) }}
 {%- endmacro %}
 
 {% macro default__test_pkg_and_dispatch(model) %}
